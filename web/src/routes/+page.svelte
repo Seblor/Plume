@@ -20,8 +20,10 @@
 				>Invite Plume</Button
 			></a
 		>
-		<Button shadow color="red" class="dark:bg-red-800 font-semibold"
-			>What is Plume?</Button
+		<a href="/about">
+			<Button shadow color="red" class="dark:bg-red-800 font-semibold"
+				>What is Plume?</Button
+			></a
 		>
 	</div>
 </section>
