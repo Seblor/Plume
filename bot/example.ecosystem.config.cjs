@@ -10,7 +10,7 @@ module.exports = {
       NODE_ENV: 'production',
       DISCORD_TOKEN: '',
       LOGS_WEBHOOK: '',
-      PREVIEW_PREFIX_URL: '',
+      PREVIEW_PREFIX_URL: 'https://plume.red/viewer/v1?logfile=',
     }
   }]
 }
