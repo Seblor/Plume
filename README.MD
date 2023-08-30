@@ -1,4 +1,4 @@
-# [$\textcolor{#ff3e00}{\textsf{Plume}}$](https://plume.red)
+# [Plume](https://plume.red)
 
 <p align="center">
   <a href="https://plume.red"><img src="./logo.webp" /></a>
