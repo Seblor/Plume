@@ -250,7 +250,7 @@ export default class GuildWatcher {
     // this.timeSeries = []
   }
 
-  updateMessageDebounced = _.debounce(this.updateMessage, 10e3)
+  updateMessageDebounced = _.debounce(this.updateMessage, 60e3)
 }
 
 function guildChannelOrder(a: NonThreadGuildBasedChannel, b: NonThreadGuildBasedChannel): number {
