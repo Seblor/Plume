@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "./"
+		},
+		{
+			"path": "./bot"
+		},
+		{
+			"path": "./web"
+		}
+	],
+	"settings": {
+		"eslint.enable": true
+	}
+}
