@@ -19,6 +19,10 @@ const config = {
       assets: "build",
       precompress: false,
       strict: true,
+      prerender: {
+        enabled: false
+      },
+      ssr: false,
     }),
 
     alias: {
