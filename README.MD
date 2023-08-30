@@ -1,6 +1,6 @@
-<h1 style="font-size: 5em; text-align: center"><a style="color: #ff3e00" href="https://plume.red">Plume</a></h1>
+# [$\textcolor{#ff3e00}{\textsf{Plume}}$](https://plume.red)
 
-<p style="text-align: center;">
+<p align="center">
   <a href="https://plume.red"><img src="./logo.webp" /></a>
 </p>
 
