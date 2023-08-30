@@ -3,8 +3,8 @@
     "logVersion": 1,
     "from": 1693173641140,
     "to": 1693260040871,
-    "guildId": "113756088230215687",
-    "guildName": "Minecraft-France"
+    "guildId": "demo-123867199341326798",
+    "guildName": "Demo Server"
   },
   "initialState": [
     {
@@ -465,7 +465,7 @@
               "members": {
                 "demo-750000344586386400": {
                   "id": "demo-750000344586386400",
-                  "name": "[NLC]John Moor",
+                  "name": "Getng",
                   "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
                   "isStreaming": false,
                   "isFilming": false,
@@ -6735,7 +6735,7 @@
           "path": "/7/data/channels/1050818368212586557/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -6756,7 +6756,7 @@
           "value": {
             "id": "1145666039229718559",
             "order": 8,
-            "name": "[NLC]John Moor's channel",
+            "name": "Getng's channel",
             "data": {
               "channelType": "voice",
               "members": {}
@@ -6773,7 +6773,7 @@
           "path": "/7/data/channels/1145666039229718559/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -7140,7 +7140,7 @@
           "path": "/7/data/channels/1145666039229718559/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -7252,7 +7252,7 @@
           "path": "/7/data/channels/1145670778600304680/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -7391,7 +7391,7 @@
           "path": "/7/data/channels/1050818368212586557/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -7412,7 +7412,7 @@
           "value": {
             "id": "1145676691063177216",
             "order": 11,
-            "name": "[NLC]John Moor's channel",
+            "name": "Getng's channel",
             "data": {
               "channelType": "voice",
               "members": {}
@@ -7429,7 +7429,7 @@
           "path": "/7/data/channels/1145676691063177216/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -11329,7 +11329,7 @@
           "path": "/7/data/channels/1145709690018336970/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -11434,7 +11434,7 @@
           "path": "/7/data/channels/1050818368212586557/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -11475,7 +11475,7 @@
           "value": {
             "id": "1145725196255367240",
             "order": 18,
-            "name": "[NLC]John Moor's channel",
+            "name": "Getng's channel",
             "data": {
               "channelType": "voice",
               "members": {}
@@ -11492,7 +11492,7 @@
           "path": "/7/data/channels/1145725196255367240/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -16250,7 +16250,7 @@
           "path": "/7/data/channels/1145774333361406012/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -17354,7 +17354,7 @@
           "path": "/7/data/channels/1145793621589766284/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -17388,7 +17388,7 @@
           "path": "/7/data/channels/1145774333361406012/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -18351,7 +18351,7 @@
           "path": "/7/data/channels/1145816111875641495/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -18516,7 +18516,7 @@
           "path": "/7/data/channels/1145817912733610024/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -18549,7 +18549,7 @@
           "path": "/7/data/channels/1145817912733610024/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -18578,7 +18578,7 @@
           "path": "/7/data/channels/1145817912733610024/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -18627,7 +18627,7 @@
           "path": "/7/data/channels/1145816111875641495/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,
@@ -19639,7 +19639,7 @@
           "path": "/7/data/channels/1145816111875641495/data/members/demo-750000344586386400",
           "value": {
             "id": "demo-750000344586386400",
-            "name": "[NLC]John Moor",
+            "name": "Getng",
             "avatar": "https://fastly.picsum.photos/id/34/200/200.jpg?hmac=XRWBHNng_p1BDrqV2tGH2Fbk12qD7KRzoufu_JIJW20",
             "isStreaming": false,
             "isFilming": false,

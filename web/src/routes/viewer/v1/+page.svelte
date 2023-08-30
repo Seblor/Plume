@@ -217,7 +217,7 @@
 			{/if}
 		</div>
 
-		<div class="new-timeline flex-col">
+		<div class="new-timeline flex-col mb-4">
 			<h1>User timelines</h1>
 			<div class="flex">
 				<Input

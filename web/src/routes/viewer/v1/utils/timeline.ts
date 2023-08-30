@@ -5,7 +5,7 @@ import type { Member } from '@PlumeTypes';
 import type { operationNames } from '../CustomTypes/operations';
 
 export function generateLabel(patches: Operation[]): string {
-  const groupedByMember = _.groupBy(patches, patch => patch.path.replace(/.*\/members\/(\d+)(?:\/.*)?/g, '$1'))
+  const groupedByMember = _.groupBy(patches, patch => patch.path.replace(/.*\/members\/((?:demo)?\d+)(?:\/.*)?/g, '$1'))
 
   const squashedPatches: operationNames[] = []
 
@@ -68,7 +68,7 @@ export function getColorFromLabel(string: string) {
   return '#ff7f0e'
 }
 
-const memberPatchRegex = RegExp(/\/members\/(\d+)\/(\w+)$/);
+const memberPatchRegex = RegExp(/\/members\/((?:demo-)?\d+)\/(\w+)$/);
 
 export function extractVoiceStateChange(patch: Operation): string | null {
   const changes = '';
