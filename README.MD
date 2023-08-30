@@ -20,10 +20,6 @@ This would make the moderation's job a lot harder since the Discord's search res
 
 # Installation
 
-## Website hosting
-
-The website is a rather strait-forward installation of SvelteKit with a Vercel hosting. More information here: https://kit.svelte.dev/docs/adapter-static#zero-config-support
-
 ## Discord bot hosting
 
 If you would like to host the bot yourself, follow there steps:
@@ -66,3 +62,7 @@ You can see the logs with the following command:
 ```bash
 npm run logs:prod
 ```
+
+## Website hosting
+
+The website is a rather strait-forward installation of SvelteKit with a Vercel hosting. More information here: https://kit.svelte.dev/docs/adapter-static#zero-config-support
