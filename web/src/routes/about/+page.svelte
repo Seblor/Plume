@@ -147,18 +147,16 @@
 		animation: bounce 1s ease-in-out infinite;
 	}
 
-	.scrollbar {
-		&::-webkit-scrollbar {
-			width: 1em;
-		}
+	.scrollbar::-webkit-scrollbar {
+		width: 1em;
+	}
 
-		&::-webkit-scrollbar-track {
-			box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-		}
+	.scrollbar::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	}
 
-		&::-webkit-scrollbar-thumb {
-			background-color: #9b1c1c;
-			outline: 1px solid slategrey;
-		}
+	.scrollbar::-webkit-scrollbar-thumb {
+		background-color: #9b1c1c;
+		outline: 1px solid slategrey;
 	}
 </style>

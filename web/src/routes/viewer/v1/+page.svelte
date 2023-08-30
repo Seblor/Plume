@@ -18,7 +18,6 @@
 	import _ from "lodash";
 	import pako from "pako";
 	import { showTextChannels } from "./store/channelsList";
-	import demoData from './demo/demo.json'
 
 	let logfile = "unknown";
 	let channelsData: LogData = {
@@ -55,9 +54,11 @@
 		previousLogfileParam = searchParams.get("logfile");
 		logfile = searchParams.get("logfile") || "unknown";
 		if (logfile === "demo") {
-			channelsData = demoData as LogData;
-			previewState = (demoData as LogData).initialState;
-			createSnapshots();
+			import("./demo/demo.json").then((demoData) => {
+				channelsData = demoData as LogData;
+				previewState = (demoData as LogData).initialState;
+				createSnapshots();
+			});
 		} else {
 			fetch(`https://query.plume.red/direct?url=${logfile}`)
 				.then((res) => {

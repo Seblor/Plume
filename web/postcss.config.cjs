@@ -4,9 +4,11 @@ const autoprefixer = require("autoprefixer");
 const config = {
   plugins: [
     //Some plugins, like tailwindcss/nesting, need to run before Tailwind,
-    tailwindcss(),
+    require('postcss-import'),
+    require('tailwindcss/nesting')(require('postcss-nesting')),
     //But others, like autoprefixer, need to run after,
     autoprefixer,
+    tailwindcss(),
   ],
 };
 
