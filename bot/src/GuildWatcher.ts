@@ -97,7 +97,7 @@ export default class GuildWatcher {
       "View channel": !permsInChannel.has(PermissionsBitField.Flags.ViewChannel),
       "Send messages": !permsInChannel.has(PermissionsBitField.Flags.SendMessages),
       "Embed links": !permsInChannel.has(PermissionsBitField.Flags.EmbedLinks),
-      "Attack files": !permsInChannel.has(PermissionsBitField.Flags.AttachFiles),
+      "Attach files": !permsInChannel.has(PermissionsBitField.Flags.AttachFiles),
     }
     if (interaction) {
       if (Object.values(missingPerms).some(v => v)) {
@@ -120,7 +120,7 @@ export default class GuildWatcher {
       })
     }
 
-    this.logMessage = await channel.send('This message will be updated regularly with the channels logs.')
+    this.logMessage = await channel.send('This message will be updated regularly with the channels logs (every 10 minutes **or** after 1 minute with no activity, whichever is sooner).')
     await patchGuildData(this.guild.id, {
       logChannelId: channel.id
     })
