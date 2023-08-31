@@ -17,7 +17,6 @@
 <div
   in:patchAdd
   out:patchRemove
-  title={channelData.name}
   style:opacity={show ? 1 : 0.5}
   class="channel"
 >
@@ -29,6 +28,7 @@
         </span>
         <span
           in:patchEdit
+          title={channelData.name}
           class="inline-block pb-0.5"
           class:category={channelData.data.channelType ===
             PlumeChannelType.CATEGORY}
