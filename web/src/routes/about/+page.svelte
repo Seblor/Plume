@@ -2,6 +2,7 @@
 	import searchBefore from "$lib/about/search_before.png";
 	import searchAfter from "$lib/about/search_after.png";
 	import logMessageExample from "$lib/about/log_message_example.png";
+    import { Button } from "flowbite-svelte";
 
 	let distanceFromTop = 0;
 	let distanceFromBottom = Infinity;
@@ -32,7 +33,7 @@
 			to log your server's voice chat activity.
 		</p>
 		<p class="mt-2">Basically, it records everything that happens on the left sidebar of your Discord server, and allows you to replay it with a nice interface in the browser.</p>
-		<p class="mt-2">Don't hesitate to check our the <a href="/viewer/v1?logfile=demo">demo</a></p>
+		<a class="mt-4" href="/viewer/v1?logfile=demo"><Button class="dark:bg-red-800">Check out the demo</Button></a>
 	</section>
 
 	<div
