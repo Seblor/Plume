@@ -4,9 +4,18 @@
 	import github from "$lib/images/github.svg";
 	import { browser } from "$app/environment";
 
-	let hoveredElementIndex = -1;
+	let hoveredElementIndex = getActiveElementIndex();
 
-	$: hoveredElementIndex = getActiveElementIndex();
+	$: searchParams = (browser && $page.url.searchParams) || null;
+
+	$: showDemo =
+		searchParams?.get("logfile") == undefined ||
+		searchParams?.get("logfile") === "demo";
+
+	$: {
+		$page.url.pathname;
+		resetHoveredElement();
+	}
 
 	function resetHoveredElement() {
 		hoveredElementIndex = getActiveElementIndex();
@@ -19,12 +28,6 @@
 			? 1
 			: 2;
 	}
-
-	$: searchParams = (browser && $page.url.searchParams) || null;
-
-	$: showDemo =
-		searchParams?.get("logfile") == undefined ||
-		searchParams?.get("logfile") === "demo";
 </script>
 
 <header>
@@ -129,7 +132,11 @@
 
 	<div class="flex">
 		<div class="corner">
-			<a class="support-server-link" href="https://discord.gg/RDP6xg2Tf2" target="_blank">
+			<a
+				class="support-server-link"
+				href="https://discord.gg/RDP6xg2Tf2"
+				target="_blank"
+			>
 				<svg
 					class="w-6 h-6 text-gray-800 dark:text-primary-full"
 					aria-hidden="true"
