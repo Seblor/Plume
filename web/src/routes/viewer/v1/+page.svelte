@@ -201,7 +201,7 @@
 	<h1>{appErrorMessage}</h1>
 {:else}
 	<div class="visualizer">
-		<div class="channels-list">
+		<div class="channels-list scrollbar">
 			{#if !searchParams}
 				<h1>Loading</h1>
 			{:else}
@@ -323,5 +323,18 @@
 		.slider-cell {
 			grid-area: 10 / 2 / 11 / 6;
 		}
+	}
+
+	.scrollbar::-webkit-scrollbar {
+		width: 1em;
+	}
+
+	.scrollbar::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	}
+
+	.scrollbar::-webkit-scrollbar-thumb {
+		background-color: #9b1c1c;
+		outline: 1px solid slategrey;
 	}
 </style>
