@@ -2,6 +2,8 @@
 	import { createEventDispatcher } from "svelte";
 	import type { LogData } from "@PlumeTypes";
 
+	const UTCOffset = new Date().getTimezoneOffset() * 60e3;
+
 	const dispatch = createEventDispatcher<{ change: number }>();
 
 	export let currentPatchIndex = 0;
@@ -10,14 +12,14 @@
 	$: maxPatch = logsData.timedPatches.length;
 	$: firstPatchTime =
 		logsData.timedPatches.length > 0
-			? formatTime(new Date(logsData.timedPatches[0].timestamp))
+			? formatTime(new Date(logsData.timedPatches[0].timestamp + UTCOffset))
 			: "loading";
 	$: lastPatchTime =
 		logsData.timedPatches.length > 0
-			? formatTime(new Date(logsData.timedPatches.at(-1)!.timestamp))
+			? formatTime(new Date(logsData.timedPatches.at(-1)!.timestamp + UTCOffset))
 			: "loading";
 	$: currentTime = logsData.timedPatches[currentPatchIndex]
-		? formatTime(new Date(logsData.timedPatches[currentPatchIndex].timestamp))
+		? formatTime(new Date(logsData.timedPatches[currentPatchIndex].timestamp + UTCOffset))
 		: "loading";
 	$: sliderLeftPos = `calc(${(currentPatchIndex / maxPatch) * 99}% + 7px)`;
 
@@ -28,7 +30,7 @@
 	function goToEarlierPatch(el: Event) {
 		const userInputTime = (el.target as HTMLInputElement).value;
 		const lastPatchIndex = logsData.timedPatches.findLastIndex((patch) => {
-			const patchTime = formatTime(new Date(patch.timestamp));
+			const patchTime = formatTime(new Date(patch.timestamp + UTCOffset));
 			if (patchTime < userInputTime) {
 				return true;
 			}
