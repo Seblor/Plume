@@ -5,7 +5,7 @@ import type { Member } from '@PlumeTypes';
 import type { operationNames } from '../CustomTypes/operations';
 
 export function generateLabel(patches: Operation[]): string {
-  const groupedByMember = _.groupBy(patches, patch => patch.path.replace(/.*\/members\/((?:demo)?\d+)(?:\/.*)?/g, '$1'))
+  const groupedByMember = _.groupBy(patches, patch => patch.path.replace(/.*\/members\/((?:demo-)?\d+)(?:\/.*)?/g, '$1'))
 
   const squashedPatches: operationNames[] = []
 
