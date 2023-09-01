@@ -131,13 +131,17 @@
 	</nav>
 
 	<div class="flex">
-		<div class="corner relative flex">
-			<p class="whitespace-nowrap absolute text-primary-full -translate-x-full translate-y-1/2">Support Server</p>
+		<div class="corner flex group">
 			<a
-				class="support-server-link"
+				class="support-server-link relative"
 				href="https://discord.gg/RDP6xg2Tf2"
 				target="_blank"
 			>
+				<p
+					class="group-hover:scale-x-100 right-0 mr-12 origin-right scale-x-0 transition-all overflow-hidden whitespace-nowrap absolute text-primary-full"
+				>
+					Support Server
+				</p>
 				<svg
 					class="w-6 h-6 text-gray-800 dark:text-primary-full"
 					aria-hidden="true"
