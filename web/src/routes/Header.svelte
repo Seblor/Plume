@@ -131,7 +131,8 @@
 	</nav>
 
 	<div class="flex">
-		<div class="corner">
+		<div class="corner relative flex">
+			<p class="whitespace-nowrap absolute text-primary-full -translate-x-full translate-y-1/2">Support Server</p>
 			<a
 				class="support-server-link"
 				href="https://discord.gg/RDP6xg2Tf2"
@@ -260,11 +261,5 @@
 			transform: translate(0, 20px);
 			user-select: none;
 		}
-	}
-
-	.support-server-link::after {
-		content: "Support Server";
-		position: absolute;
-		transform: translate(-75%, 10%);
 	}
 </style>
