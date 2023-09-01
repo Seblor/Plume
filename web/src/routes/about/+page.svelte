@@ -31,6 +31,8 @@
 			<span class="text-primary-full">Plume</span> is a Discord bot that allows you
 			to log your server's voice chat activity.
 		</p>
+		<p class="mt-2">Basically, it records everything that happens on the left sidebar of your Discord server, and allows you to replay it with a nice interface in the browser.</p>
+		<p class="mt-2">Don't hesitate to check our the <a href="/viewer/v1?logfile=demo">demo</a></p>
 	</section>
 
 	<div

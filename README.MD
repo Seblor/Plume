@@ -14,6 +14,8 @@ I made this project to solve a few issue with the current logging tools of my Di
 
 This would make the moderation's job a lot harder since the Discord's search results would be cluttered with voice chat activity.
 
+It was also a great opportunity for me to learn Svelte.
+
 # Invite the bot
 
 [Just click here!](https://discord.com/api/oauth2/authorize?client_id=1146113119840641234&scope=bot&permissions=2147485824)
