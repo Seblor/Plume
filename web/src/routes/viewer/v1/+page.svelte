@@ -18,6 +18,7 @@
 	import _ from "lodash";
 	import pako from "pako";
 	import { showTextChannels } from "./store/channelsList";
+    import { IDsToShow } from "./store/timelines";
 
 	let logfile = "unknown";
 	let channelsData: LogData = {
@@ -38,8 +39,6 @@
 	let inputUserId: string;
 
 	let previewState: ChannelState[] = [];
-
-	$: usersToCheck = [] as string[];
 
 	$: appErrorMessage = "";
 
@@ -237,14 +236,14 @@
 					class="btn ml-2 break-keep whitespace-nowrap"
 					color="green"
 					on:click={() => {
-						if (usersToCheck.includes(inputUserId)) {
+						if ($IDsToShow.includes(inputUserId)) {
 							idInputErrorMessage = "This user ID is already in the list";
 							inputUserId = "";
 						} else if (usersIds.includes(inputUserId)) {
 							idInputErrorMessage = "";
 							selectedUserId = inputUserId;
 							inputUserId = "";
-							usersToCheck = [...usersToCheck, selectedUserId];
+							$IDsToShow = [...$IDsToShow, selectedUserId];
 						} else {
 							idInputErrorMessage = "Could not find this user ID in the logs";
 						}
@@ -257,7 +256,7 @@
 		</div>
 
 		<div class="timelines-cell">
-			{#each usersToCheck as userToCheck (userToCheck)}
+			{#each $IDsToShow as userToCheck (userToCheck)}
 				<div
 					class="relative mx-8 rounded-2xl shadow-2xl shadow-black"
 					animate:flip
@@ -268,7 +267,7 @@
 						logsData={channelsData}
 						{currentPatchIndex}
 						on:close={() =>
-							(usersToCheck = usersToCheck.filter(
+							($IDsToShow = $IDsToShow.filter(
 								(userId) => userId !== userToCheck
 							))}
 						on:change={applyPatches}

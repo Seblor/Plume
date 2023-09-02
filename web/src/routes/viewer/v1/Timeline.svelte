@@ -9,7 +9,7 @@
 		getColorFromLabel,
 	} from "./utils/timeline";
 	import { uniqueId } from "lodash";
-	import { allChartWidths, maxWidth, scrollX } from "./store/timeline_metadata";
+	import { allChartWidths, maxWidth, scrollX } from "./store/timelines";
 	import { getUserDataDemoFallback } from "./utils/getUserData";
 
 	const dispatch = createEventDispatcher<{ change: number }>();
