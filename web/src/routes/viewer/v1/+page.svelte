@@ -18,7 +18,7 @@
 	import _ from "lodash";
 	import pako from "pako";
 	import { showTextChannels } from "./store/channelsList";
-	import { IDsToShow } from "./store/timelines";
+	import { IDsToShow, scrollOnCursorChange } from "./store/timelines";
 
 	let logfile = "unknown";
 	let channelsData: LogData = {
@@ -194,7 +194,7 @@
 	let hovering = -1;
 
 	const drop = (event: DragEvent, index: number) => {
-		if (event.dataTransfer === null ){
+		if (event.dataTransfer === null) {
 			return;
 		}
 		event.dataTransfer.dropEffect = "move";
@@ -248,7 +248,12 @@
 			{/if}
 		</div>
 
-		<div class="new-timeline flex-col mb-4">
+		<div class="new-timeline flex-col mb-4 relative">
+			<div class="absolute left-2">
+				<Checkbox class="my-2" bind:checked={$scrollOnCursorChange}
+					>Synchronize timelines with slider?</Checkbox
+				>
+			</div>
 			<h1>User timelines</h1>
 			<div class="flex">
 				<Input
@@ -297,7 +302,9 @@
 					draggable={true}
 					on:dragstart={(event) => dragstart(event, index)}
 					on:drop|preventDefault={(event) => drop(event, index)}
-					on:dragover={(e) => { e.preventDefault() }}
+					on:dragover={(e) => {
+						e.preventDefault();
+					}}
 					on:dragenter={() => (hovering = index)}
 					class:is-active={hovering === index}
 				>
@@ -383,6 +390,6 @@
 	}
 
 	.list-item.is-active {
-		background-color: #A5371B;
+		background-color: #a5371b;
 	}
 </style>

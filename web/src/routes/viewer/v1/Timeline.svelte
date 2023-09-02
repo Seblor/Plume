@@ -9,8 +9,15 @@
 		getColorFromLabel,
 	} from "./utils/timeline";
 	import { uniqueId } from "lodash";
-	import { allChartWidths, maxWidth, scrollX } from "./store/timelines";
+	import {
+		allChartWidths,
+		maxWidth,
+		scrollOnCursorChange,
+		scrollX,
+	} from "./store/timelines";
 	import { getUserDataDemoFallback } from "./utils/getUserData";
+	import _ from "lodash";
+    import { getScrollParent } from "../../../utils/dom";
 
 	const dispatch = createEventDispatcher<{ change: number }>();
 	const dispatchClose = createEventDispatcher();
@@ -23,6 +30,8 @@
 	let timelineWrapper: HTMLDivElement;
 	let timeline: HTMLDivElement;
 	let dummyTimeline: HTMLDivElement;
+	let cursorElement: HTMLDivElement;
+	let root: HTMLDivElement;
 
 	let dayStartDate = new Date();
 	let dayEndDate = new Date();
@@ -112,6 +121,32 @@
 			(parseInt(timeline?.querySelector("svg")?.getAttribute("width") ?? "40") -
 				40) *
 			percentageOfDay;
+
+		tick().then(() => {
+			syncScrollWithSlider();
+		});
+	}
+
+	$: {
+		$scrollOnCursorChange;
+		syncScrollWithSlider();
+	}
+
+	function syncScrollWithSlider() {
+		if (root && cursorElement && $scrollOnCursorChange) {
+			// Scroll to the cursor element by cancel out vertical scrolling since there might by other cursord outside viewport
+			const scrollRoot = getScrollParent(root);
+			const beforeScroll = scrollRoot?.scrollTop || 0;
+
+			cursorElement.scrollIntoView({
+				inline: "center",
+				block: "nearest",
+			});
+
+			if (scrollRoot && scrollRoot.scrollTop != undefined) {
+				scrollRoot.scrollTop = beforeScroll;
+			}
+		}
 	}
 
 	function color5(d: any) {
@@ -199,7 +234,7 @@
 	});
 </script>
 
-<div class="timeline relative rounded-2xl">
+<div class="timeline relative rounded-2xl" bind:this={root}>
 	<div
 		class="absolute top-0 left-0 cursor-pointer m-2"
 		on:click={() => dispatchClose("close")}
@@ -254,13 +289,12 @@
 				bind:clientWidth={graphWidth}
 			/>
 
-			<div class="cursor-wrapper">
-				<!-- Values are fine tuned from various tests, no idea why d3kit-timeline fucks up dimensions so much -->
-				<div
-					class="cursor border border-primary-full"
-					style:left="{cursorLeft}px"
-				/>
-			</div>
+			<!-- Values are fine tuned from various tests, no idea why d3kit-timeline fucks up dimensions so much -->
+			<div
+				class="cursor-wrapper cursor border border-primary-full"
+				bind:this={cursorElement}
+				style:left="{cursorLeft}px"
+			/>
 
 			<div
 				class="timeline-dummy-graph"
@@ -308,8 +342,8 @@
 				pointer-events: none;
 				top: 0px;
 				height: 100%;
-				left: 20px;
-				right: 20px;
+				margin-left: 20px;
+				margin-right: 20px;
 			}
 		}
 
