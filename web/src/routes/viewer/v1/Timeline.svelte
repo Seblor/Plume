@@ -100,6 +100,9 @@
 	}
 
 	function updateCursorPos() {
+		if (currentPatch === undefined) {
+			return;
+		}
 		const currentPatchDate = new Date(currentPatch.timestamp);
 		const percentageOfDay =
 			(currentPatchDate.getTime() - dayStartDate.getTime()) /
@@ -253,7 +256,10 @@
 
 			<div class="cursor-wrapper">
 				<!-- Values are fine tuned from various tests, no idea why d3kit-timeline fucks up dimensions so much -->
-				<div class="cursor border border-primary-full" style:left="{cursorLeft}px" />
+				<div
+					class="cursor border border-primary-full"
+					style:left="{cursorLeft}px"
+				/>
 			</div>
 
 			<div
