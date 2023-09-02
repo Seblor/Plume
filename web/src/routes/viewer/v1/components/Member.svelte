@@ -17,16 +17,6 @@
     );
     return false;
   }
-
-  let clickedClipboard = false;
-
-  function onClipboardClick() {
-    navigator.clipboard.writeText(memberData.id);
-    clickedClipboard = true;
-    setTimeout(() => {
-      clickedClipboard = false;
-    }, 1000);
-  }
 </script>
 
 <div in:patchAdd out:patchRemove>
