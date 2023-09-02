@@ -18,7 +18,7 @@
 	import _ from "lodash";
 	import pako from "pako";
 	import { showTextChannels } from "./store/channelsList";
-    import { IDsToShow } from "./store/timelines";
+	import { IDsToShow } from "./store/timelines";
 
 	let logfile = "unknown";
 	let channelsData: LogData = {
@@ -189,6 +189,38 @@
 			snapshotIndex++;
 		}
 	}
+
+	// Drag and drop (courtesy of https://svelte.dev/repl/3bf15c868aa94743b5f1487369378cf3?version=3.21.0)
+	let hovering = -1;
+
+	const drop = (event: DragEvent, index: number) => {
+		if (event.dataTransfer === null ){
+			return;
+		}
+		event.dataTransfer.dropEffect = "move";
+		const start = parseInt(event.dataTransfer.getData("text/plain"));
+		const newTimelinesList = [...$IDsToShow];
+
+		if (start < index) {
+			newTimelinesList.splice(index + 1, 0, newTimelinesList[start]);
+			newTimelinesList.splice(start, 1);
+		} else {
+			newTimelinesList.splice(index, 0, newTimelinesList[start]);
+			newTimelinesList.splice(start + 1, 1);
+		}
+		$IDsToShow = newTimelinesList;
+		hovering = -1;
+	};
+
+	const dragstart = (event: DragEvent, index: number) => {
+		if (event.dataTransfer === null) {
+			return;
+		}
+		event.dataTransfer.effectAllowed = "move";
+		event.dataTransfer.dropEffect = "move";
+		const start = index;
+		event.dataTransfer.setData("text/plain", String(start));
+	};
 </script>
 
 <svelte:head>
@@ -255,12 +287,19 @@
 			<span class="h-2 text-red-500 font-bold">{idInputErrorMessage}</span>
 		</div>
 
-		<div class="timelines-cell">
-			{#each $IDsToShow as userToCheck (userToCheck)}
+		<div class="timelines-cell list">
+			{#each $IDsToShow as userToCheck, index (userToCheck)}
 				<div
-					class="relative mx-8 rounded-2xl shadow-2xl shadow-black"
-					animate:flip
+					class="list-item relative mx-8 rounded-2xl shadow-2xl shadow-black"
+					animate:flip={{ duration: 300, delay: 0 }}
 					transition:slide
+					role="listitem"
+					draggable={true}
+					on:dragstart={(event) => dragstart(event, index)}
+					on:drop|preventDefault={(event) => drop(event, index)}
+					on:dragover={(e) => { e.preventDefault() }}
+					on:dragenter={() => (hovering = index)}
+					class:is-active={hovering === index}
 				>
 					<Timeline
 						patchFilter={userToCheck}
@@ -335,5 +374,15 @@
 	.scrollbar::-webkit-scrollbar-thumb {
 		background-color: #9b1c1c;
 		outline: 1px solid slategrey;
+	}
+
+	// Drag and drop
+
+	.list-item {
+		display: block; // Removing the list bullets
+	}
+
+	.list-item.is-active {
+		background-color: #A5371B;
 	}
 </style>
