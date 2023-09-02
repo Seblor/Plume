@@ -149,9 +149,6 @@
 	);
 
 	async function applyPatches(patchesCount: CustomEvent<number>) {
-		// const clonedChannelsData = JSON.parse(
-		// 	JSON.stringify(channelsData)
-		// ) as LogData;
 		const previousSnapshot = _.cloneDeep(
 			snapshots[Math.floor(patchesCount.detail / 100)]
 		);
