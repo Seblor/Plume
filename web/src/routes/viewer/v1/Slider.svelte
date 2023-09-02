@@ -9,7 +9,7 @@
 	export let currentPatchIndex = 0;
 	export let logsData: LogData;
 
-	$: maxPatch = logsData.timedPatches.length;
+	$: maxPatch = logsData.timedPatches.length - 1;
 	$: firstPatchTime =
 		logsData.timedPatches.length > 0
 			? formatTime(new Date(logsData.timedPatches[0].timestamp + UTCOffset))
@@ -51,13 +51,13 @@
 	<div class="relative flex">
 		<span class="hour absolute mt-11 left-0">{firstPatchTime}</span>
 		<svg
-			class="w-10 h-10 text-gray-800 dark:text-white cursor-pointer"
+			class={"w-10 h-10" + (currentPatchIndex === 0 ? " text-gray-400 cursor-not-allowed" : " text-white cursor-pointer")}
 			aria-hidden="true"
 			xmlns="http://www.w3.org/2000/svg"
 			fill="currentColor"
 			viewBox="0 0 12 16"
 			on:click={() => {
-				dispatch("change", currentPatchIndex - 1);
+				dispatch("change", Math.max(0, currentPatchIndex - 1));
 			}}
 		>
 			<path
@@ -89,13 +89,13 @@
 	<div class="relative flex">
 		<span class="hour absolute mt-11 right-0">{lastPatchTime}</span>
 		<svg
-			class="w-10 h-10 text-gray-800 dark:text-white cursor-pointer"
+			class={"w-10 h-10" + (currentPatchIndex === maxPatch ? " text-gray-400 cursor-not-allowed" : " text-white cursor-pointer")}
 			aria-hidden="true"
 			xmlns="http://www.w3.org/2000/svg"
 			fill="currentColor"
 			viewBox="0 0 12 16"
 			on:click={() => {
-				dispatch("change", currentPatchIndex + 1);
+				dispatch("change", Math.min(maxPatch, currentPatchIndex + 1));
 			}}
 		>
 			<path
