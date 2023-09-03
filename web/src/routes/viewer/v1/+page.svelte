@@ -318,7 +318,7 @@
 				</div>
 			{/each}
 		</div>
-		<div class="slider-cell">
+		<div class="slider-cell pb-4">
 			<Slider
 				logsData={channelsData}
 				{currentPatchIndex}

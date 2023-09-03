@@ -16,7 +16,7 @@
     <p class="w-1/3 flex place-content-center gap-1">
       Made with ❤️ by <a href="https://github.com/seblor">Seblor</a>
     </p>
-    <p class="w-1/3 flex place-content-end mx-6 gap-6">
+    <p class="w-1/3 flex place-content-end px-6 gap-6">
       <a href="/terms">Terms of Services</a>
       <a href="/privacy">Privacy Policy</a>
     </p>
