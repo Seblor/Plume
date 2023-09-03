@@ -26,7 +26,9 @@
 			? 0
 			: $page.url.pathname.startsWith("/viewer")
 			? 1
-			: 2;
+			: $page.url.pathname.startsWith("/about")
+			? 2
+			: Infinity;
 	}
 </script>
 
@@ -124,6 +126,7 @@
 				<span class="navigation-tab__txt text-white">About</span>
 			</a>
 			<div
+				class:-translate-y-20={hoveredElementIndex === Infinity}
 				style:left={hoveredElementIndex * 75 + "px"}
 				class="navigation-tab-overlay bg-red-800"
 			/>

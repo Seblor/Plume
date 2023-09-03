@@ -11,9 +11,14 @@
     <slot />
   </main>
 
-  <footer>
-    <p>
+  <footer class="flex">
+    <p class="w-1/3 flex place-content-start gap-1"></p>
+    <p class="w-1/3 flex place-content-center gap-1">
       Made with ❤️ by <a href="https://github.com/seblor">Seblor</a>
+    </p>
+    <p class="w-1/3 flex place-content-end mx-6 gap-6">
+      <a href="/terms">Terms of Services</a>
+      <a href="/privacy">Privacy Policy</a>
     </p>
   </footer>
 </div>
@@ -43,9 +48,6 @@
 
   footer {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     padding: 0.5em;
 
     a {
