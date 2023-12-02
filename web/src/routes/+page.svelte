@@ -30,7 +30,7 @@
 
 <style>
 	.plume-title {
-		font-size: 10rem;
+		font-size: 15vh;
 		font-family: "GreatVibes";
 	}
 
@@ -43,5 +43,6 @@
 
 	h1 {
 		width: 100%;
+    max-height: 50vh;
 	}
 </style>

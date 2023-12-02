@@ -28,6 +28,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    min-width: 700px;
     max-height: 100vh;
     align-content: stretch;
     width: 100vw;
