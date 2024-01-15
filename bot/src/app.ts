@@ -1,5 +1,5 @@
 // Connect to Discord
-import { Client, IntentsBitField, OAuth2Scopes, WebhookClient, AuditLogEvent, Interaction, PermissionsBitField } from 'discord.js'
+import { Client, IntentsBitField, OAuth2Scopes, WebhookClient, AuditLogEvent, Interaction, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
 import logger from './logger.js'
 import GuildWatcher from './GuildWatcher.js'
@@ -106,15 +106,36 @@ client.on('ready', async () => {
 })
 
 client.on('interactionCreate', async (interaction: Interaction) => {
-  if (!interaction.isChatInputCommand() || interaction.commandName !== 'set-log-channel' || !interaction.guild || !interaction.member) {
-    return
-  }
-  const member = await interaction.guild.members.fetch(interaction.member.user.id)
-  if (!member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-    return
-  }
+  if (interaction.isChatInputCommand() && interaction.commandName === 'set-log-channel' && interaction.guild && interaction.member) {
+    const member = await interaction.guild.members.fetch(interaction.member.user.id)
+    if (!member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+      return
+    }
 
-  guildWatchers[interaction.guild.id].setLogChannel(interaction.options.getChannel('channel', true), interaction)
+    guildWatchers[interaction.guild.id].setLogChannel(interaction.options.getChannel('channel', true), interaction)
+
+  } else if (interaction.isButton() && interaction.customId === 'recreate-link') {
+    await interaction.reply({ ephemeral: true, content: 'Recreating link...' })
+    const logFileUrl = `${process.env.PREVIEW_PREFIX_URL}${interaction.message.attachments.find(a => a.name.includes('gzip'))?.url}`
+
+    if (logFileUrl === undefined) {
+      interaction.editReply({ content: 'No log file found!' })
+      return
+    }
+
+    const newComponents = [
+      new ActionRowBuilder<ButtonBuilder>().addComponents([
+        new ButtonBuilder().setURL(logFileUrl).setLabel('View logs').setStyle(ButtonStyle.Link),
+        new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Recreate link').setCustomId('recreate-link')
+      ])
+    ]
+
+    await interaction.message.edit({ components: newComponents }).catch(error => {
+      void interaction.editReply({ content: 'Failed to recreate link!' })
+      console.error(error)
+    })
+    interaction.editReply({ content: 'Link recreated!' })
+  }
 })
 
 void client.login(process.env.DISCORD_TOKEN)
