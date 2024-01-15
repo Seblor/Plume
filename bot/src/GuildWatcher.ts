@@ -250,7 +250,8 @@ export default class GuildWatcher {
       ],
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents([
-          new ButtonBuilder().setURL(logFileUrl).setLabel('View logs').setStyle(ButtonStyle.Link)
+          new ButtonBuilder().setURL(logFileUrl).setLabel('View logs').setStyle(ButtonStyle.Link),
+          new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Recreate link').setCustomId('recreate-link')
         ])
       ]
     })
