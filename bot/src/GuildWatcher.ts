@@ -48,8 +48,12 @@ export default class GuildWatcher {
     }
   }
 
-  async rotateLogs(): Promise<this> {
+  async sendUpdateMessageAndRotateLogs(): Promise<this> {
     await this.updateMessage()
+    return this.rotateLogs()
+  }
+
+  rotateLogs(): this {
     this.initialState = this.generateGuildState()
     this.previousState = this.initialState
     this.patches = []
@@ -130,7 +134,7 @@ export default class GuildWatcher {
 
   async handleGuildUpdate(origin: string, force = false): Promise<this> {
     if (this.patches.length > 0 && new Date().getDay() !== new Date(this.patches[0].timestamp).getDay()) {
-      await this.rotateLogs()
+      await this.sendUpdateMessageAndRotateLogs()
     }
     const newState = this.generateGuildState()
     const diffPatch = jsonpatch.compare(this.previousState, newState)
@@ -198,6 +202,15 @@ export default class GuildWatcher {
       this.logMessage = await this.logMessage.edit({
         content: '',
         files: [dataTextFileCompressedMinified, plumeLogo]
+      }).catch(() => {
+        const canSeeChannel = this.logChannel?.permissionsFor(this.guild.client.user)?.has(PermissionsBitField.Flags.ViewChannel) ?? false
+        const canFetchMessage = this.logChannel?.permissionsFor(this.guild.client.user)?.has(PermissionsBitField.Flags.ReadMessageHistory) ?? false
+        console.log(`Error editing message in guild ${this.guild.name} (${this.guild.id}). Can see channel: ${canSeeChannel}, can fetch message: ${canFetchMessage}.`)
+
+        return this.logChannel!.send({
+          content: '',
+          files: [dataTextFileCompressedMinified, plumeLogo]
+        })
       })
     } else {
       if (this.logChannel == null) {
@@ -241,6 +254,11 @@ export default class GuildWatcher {
         ])
       ]
     })
+      .catch(() => {
+        console.log(`Failed to update message for guild ${this.guild.id}`)
+        this.rotateLogs()
+      })
+      .catch(() => null)
 
 
     // Write the time series to a file named with the current timestamp
