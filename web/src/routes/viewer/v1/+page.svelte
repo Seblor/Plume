@@ -51,7 +51,7 @@
 
 	$: if (searchParams && searchParams.get("logfile") !== previousLogfileParam) {
 		previousLogfileParam = searchParams.get("logfile");
-		logfile = searchParams.get("logfile") || "unknown";
+		logfile = getLogFile($page.url.search) || "unknown";
 		if (logfile === "demo") {
 			import("./demo/demo.json").then((demoData) => {
 				channelsData = demoData as LogData;
@@ -218,6 +218,10 @@
 		const start = index;
 		event.dataTransfer.setData("text/plain", String(start));
 	};
+
+	function getLogFile(searchParamsStr: string): string {
+		return searchParamsStr.replace('?logfile=', '')
+	}
 </script>
 
 <svelte:head>
