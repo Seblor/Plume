@@ -59,7 +59,7 @@
 				createSnapshots();
 			});
 		} else {
-			fetch(`https://query.plume.red/direct?url=${logfile}`)
+			fetch(`https://query.plume.red/direct?url=${URL.encodeURI(logfile)}`)
 				.then((res) => {
 					if (res.status === 404) {
 						appErrorMessage = "This log file does not exist";
