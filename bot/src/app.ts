@@ -32,6 +32,13 @@ client.on('guildCreate', async guild => {
     .find(l => l.action === AuditLogEvent.BotAdd &&
       l.targetId === client.user?.id)?.executor
 
+  if (inviter != null) {
+    void inviter.send(`Thanks for adding me to ${guild.name}!
+To get started, use the \`/set-log-channel\` command to set the channel where the logs will be sent.
+
+If you have any issue, don't hesitate to contact the support server: <https://discord.gg/RDP6xg2Tf2>`).catch(() => null)
+  }
+
   void webhookClient.send({
     content: `Joined guild:
 \`\`\`
