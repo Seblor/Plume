@@ -70,6 +70,9 @@ export function logError (error: unknown, metaData: any): void {
       },
       additional: metaData
     })
+  } else if (typeof error === 'string') {
+    logger.error(`## ${error}
+${typeof metaData === 'object' ? JSON.stringify(metaData, null, 2) : metaData}`)
   } else {
     logger.error('unhandledRejection', {
       error,

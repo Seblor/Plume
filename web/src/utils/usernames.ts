@@ -29,7 +29,7 @@ export async function getUserData(userId: string): Promise<userData> {
     return usernames[userId];
   }
   usernames[userId] = fetch(
-    "https://discordlookup.mesavirep.xyz/v1/user/" + userId
+    "https://discordlookup.mesalytic.moe/v1/user/" + userId
   )
     .then((res) => res.json())
     .then((data) => data).catch(() => _.cloneDeep(unknownUser));

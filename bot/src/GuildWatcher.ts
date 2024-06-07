@@ -4,6 +4,7 @@ import { getGuildData, patchGuildData } from './db.js'
 import pako from 'pako'
 import jsonpatch from 'fast-json-patch';
 import _ from 'lodash'
+import { logError } from './logger.js';
 
 type GuildStateType = ChannelState[]
 
@@ -207,6 +208,10 @@ export default class GuildWatcher {
         const canFetchMessage = this.logChannel?.permissionsFor(this.guild.client.user)?.has(PermissionsBitField.Flags.ReadMessageHistory) ?? false
         console.log(`Error editing message in guild ${this.guild.name} (${this.guild.id}). Can see channel: ${canSeeChannel}, can fetch message: ${canFetchMessage}.`)
 
+        if (!canSeeChannel) {
+          return this.logMessage! // Cannot be null since it has been checked just before
+        }
+
         return this.logChannel!.send({
           content: '',
           files: [dataTextFileCompressedMinified, plumeLogo]
@@ -216,10 +221,39 @@ export default class GuildWatcher {
       if (this.logChannel == null) {
         return
       }
-      this.logMessage = await this.logChannel.send({
-        content: '',
-        files: [dataTextFileCompressedMinified, plumeLogo]
-      })
+      this.logMessage = await this.logChannel
+        .send({
+          content: '',
+          files: [dataTextFileCompressedMinified, plumeLogo]
+        })
+        .catch(async (error: Error) => {
+          if (error.message.includes('Missing Access')) {
+            const permsInChannel = this.logChannel!.permissionsFor(await this.guild.members.fetchMe())
+
+            const missingPerms = {
+              "View channel": !permsInChannel.has(PermissionsBitField.Flags.ViewChannel),
+              "Send messages": !permsInChannel.has(PermissionsBitField.Flags.SendMessages),
+              "Embed links": !permsInChannel.has(PermissionsBitField.Flags.EmbedLinks),
+              "Attach files": !permsInChannel.has(PermissionsBitField.Flags.AttachFiles),
+            }
+            if (Object.values(missingPerms).some(v => v)) {
+              logError(
+                "Missing Permissions",
+                `Some ${Object.values(missingPerms).filter(v => v).length > 1 ? 'permissions are' : 'permission is'} missing for Plume in Guild ${this.guild.name} (${this.guild.id}) and channel ${this.logChannel?.name} (${this.logChannel?.id}) :
+                ${Object.entries(missingPerms).map(([key, value]) => {
+                  return `- ${value ? '❌' : '✅'} ${key}`
+                }).join('\n')}`
+              )
+            }
+          } else {
+            logError(error, `Could not send message with this.logMessage = ${this.logMessage} in channel ${this.logChannel?.name} (${this.logChannel?.id}) from guild ${this.guild.name} (${this.guild.id})`)
+          }
+          return this.logMessage
+        })
+    }
+
+    if (!this.logMessage) {
+      return
     }
 
     const logFileUrl = `${process.env.PREVIEW_PREFIX_URL}${this.logMessage.attachments.find(a => a.name.includes('gzip'))?.url}`
