@@ -50,6 +50,7 @@
 	$: selectedUserId = "";
 
 	$: if (searchParams && searchParams.get("logfile") !== previousLogfileParam) {
+		IDsToShow.set([]); // Resetting the list of user timelines to show
 		previousLogfileParam = searchParams.get("logfile");
 		logfile = getLogFile($page.url.search) || "unknown";
 		if (logfile === "demo") {
