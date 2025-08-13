@@ -9,7 +9,7 @@
 	export let currentPatchIndex = 0;
 	export let logsData: LogData;
 
-	$: maxPatch = logsData.timedPatches.length - 1;
+	$: maxPatch = logsData.timedPatches.length;
 	$: firstPatchTime =
 		logsData.timedPatches.length > 0
 			? formatTime(new Date(logsData.timedPatches[0].timestamp + UTCOffset))
