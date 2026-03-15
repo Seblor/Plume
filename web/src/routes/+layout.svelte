@@ -26,7 +26,6 @@
     flex-direction: column;
     height: 100vh;
     max-height: 100vh;
-    min-width: 700px;
     width: 100vw;
     overflow: hidden;
   }
@@ -44,7 +43,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.625rem 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.5rem 1.25rem;
     border-top: 1px solid var(--border);
     background: rgba(13, 17, 23, 0.6);
     flex-shrink: 0;

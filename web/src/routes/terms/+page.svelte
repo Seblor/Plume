@@ -182,4 +182,18 @@
     line-height: 1.65;
     font-size: 0.925rem;
   }
+
+  @media (max-width: 640px) {
+    .legal-page {
+      padding: 1.5rem 1rem;
+    }
+
+    .legal-doc {
+      gap: 1.5rem;
+    }
+
+    .doc-header h1 {
+      font-size: 1.5rem;
+    }
+  }
 </style>

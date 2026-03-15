@@ -192,6 +192,8 @@
   // Drag and drop (courtesy of https://svelte.dev/repl/3bf15c868aa94743b5f1487369378cf3?version=3.21.0)
   let hovering = -1;
   let dragGhost: HTMLElement | null = null;
+  let sidebarOpen = false;
+  let controlsOpen = false;
 
   const drop = (event: DragEvent, index: number) => {
     if (event.dataTransfer === null) {
@@ -269,8 +271,18 @@
   </div>
 {:else}
   <div class="visualizer">
+    <!-- Mobile sidebar backdrop -->
+    {#if sidebarOpen}
+      <div
+        class="sidebar-backdrop"
+        on:click={() => (sidebarOpen = false)}
+        role="presentation"
+        aria-hidden="true"
+      />
+    {/if}
+
     <!-- ── Channels sidebar ──────────────────────────────── -->
-    <aside class="channels-sidebar scrollbar">
+    <aside class="channels-sidebar scrollbar" class:open={sidebarOpen}>
       {#if !searchParams}
         <div class="sidebar-loading">
           <span>Loading…</span>
@@ -298,49 +310,119 @@
     <div class="main-panel">
       <!-- Add timeline bar -->
       <div class="add-timeline-bar">
+        <button
+          class="sidebar-toggle"
+          aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+          on:click={() => (sidebarOpen = !sidebarOpen)}
+        >
+          {#if sidebarOpen}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              fill="none"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              ><path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18 18 6M6 6l12 12"
+              /></svg
+            >
+          {:else}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              fill="none"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              ><path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              /></svg
+            >
+          {/if}
+        </button>
+
         <div class="toggle-label">
           <Checkbox class="my-0" bind:checked={$scrollOnCursorChange}
             >Scroll timelines with slider</Checkbox
           >
         </div>
 
-        <div class="add-timeline-controls">
-          {#if idInputErrorMessage}
-            <span class="input-error">{idInputErrorMessage}</span>
-          {/if}
-          <div class="input-row">
-            <Input
-              size="sm"
-              list="usersIds"
-              id="userId"
-              name="userId"
-              placeholder="User ID"
-              bind:value={inputUserId}
-              class="timeline-input"
-            />
-            <datalist id="usersIds">
-              {#each usersIds as userId}
-                <option value={userId}>{userId}</option>
-              {/each}
-            </datalist>
-          </div>
-          <Button
-            class="add-btn"
-            color="green"
-            on:click={() => {
-              if ($IDsToShow.includes(inputUserId)) {
-                idInputErrorMessage = "This user ID is already in the list";
-                inputUserId = "";
-              } else if (usersIds.includes(inputUserId)) {
-                idInputErrorMessage = "";
-                selectedUserId = inputUserId;
-                inputUserId = "";
-                $IDsToShow = [...$IDsToShow, selectedUserId];
-              } else {
-                idInputErrorMessage = "Could not find this user ID in the logs";
-              }
-            }}>Add timeline</Button
+        <!-- Controls toggle (mobile only) -->
+        <button
+          class="controls-toggle"
+          aria-label={controlsOpen ? "Hide controls" : "Show controls"}
+          aria-expanded={controlsOpen}
+          on:click={() => (controlsOpen = !controlsOpen)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="none"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            ><path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 5v14M5 12h14"
+            /></svg
           >
+          Add timeline
+        </button>
+
+        <!-- Controls — hidden on mobile behind toggle -->
+        <div class="bar-controls" class:controls-open={controlsOpen}>
+          <div class="add-timeline-controls">
+            {#if idInputErrorMessage}
+              <span class="input-error">{idInputErrorMessage}</span>
+            {/if}
+            <div class="input-row">
+              <Input
+                size="sm"
+                list="usersIds"
+                id="userId"
+                name="userId"
+                placeholder="User ID"
+                bind:value={inputUserId}
+                class="timeline-input"
+              />
+              <datalist id="usersIds">
+                {#each usersIds as userId}
+                  <option value={userId}>{userId}</option>
+                {/each}
+              </datalist>
+            </div>
+            <Button
+              class="add-btn"
+              color="green"
+              on:click={() => {
+                if ($IDsToShow.includes(inputUserId)) {
+                  idInputErrorMessage = "This user ID is already in the list";
+                  inputUserId = "";
+                } else if (usersIds.includes(inputUserId)) {
+                  idInputErrorMessage = "";
+                  selectedUserId = inputUserId;
+                  inputUserId = "";
+                  $IDsToShow = [...$IDsToShow, selectedUserId];
+                  controlsOpen = false;
+                } else {
+                  idInputErrorMessage =
+                    "Could not find this user ID in the logs";
+                }
+              }}>Add timeline</Button
+            >
+          </div>
         </div>
       </div>
 
@@ -482,9 +564,19 @@
     flex-wrap: wrap;
   }
 
+  /* Controls wrapper — always visible on desktop */
+  .bar-controls {
+    display: contents; /* transparent wrapper on desktop */
+  }
+
+  /* Controls toggle button — hidden on desktop */
+  .controls-toggle {
+    display: none;
+  }
+
   .add-timeline-controls {
     display: flex;
-		align-items: baseline;
+    align-items: baseline;
     gap: 0.5em;
   }
 
@@ -545,5 +637,111 @@
     padding: 0.5rem 1rem 0.75rem;
     border-top: 1px solid var(--border);
     background: var(--bg-surface);
+  }
+
+  /* Sidebar toggle button (hidden on desktop) */
+  .sidebar-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-overlay);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    padding: 0.375rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition:
+      background var(--transition),
+      color var(--transition);
+  }
+  .sidebar-toggle:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  /* Sidebar backdrop (mobile only) */
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 49;
+  }
+
+  @media (max-width: 640px) {
+    .sidebar-toggle {
+      display: flex;
+    }
+
+    .sidebar-backdrop {
+      display: block;
+    }
+
+    .channels-sidebar {
+      position: fixed;
+      left: -290px;
+      width: 280px;
+      height: calc(100% - 3.5rem);
+      z-index: 50;
+      transition: left 0.22s ease;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .channels-sidebar.open {
+      left: 0;
+    }
+
+    .timelines-area {
+      padding: 0.5rem 0.5rem;
+    }
+
+    .add-timeline-bar {
+			display: flex;
+			justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 0.5rem 0.75rem;
+      gap: 0.5rem;
+    }
+
+    /* Show the toggle button on mobile */
+    .controls-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: var(--bg-overlay);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.375rem 0.625rem;
+      cursor: pointer;
+      transition:
+        background var(--transition),
+        color var(--transition);
+      flex-shrink: 0;
+    }
+    .controls-toggle:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    /* Controls panel: hidden by default, flex column when open */
+    .bar-controls {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 0.375rem;
+      border-top: 1px solid var(--border);
+    }
+    .bar-controls.controls-open {
+      display: flex;
+    }
+
+    .add-timeline-controls {
+      flex-shrink: 0;
+    }
   }
 </style>

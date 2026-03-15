@@ -61,7 +61,7 @@
 					<img src={searchBefore} alt="Discord search cluttered with voice logs" />
 					<figcaption>Without <span class="plume">Plume</span></figcaption>
 				</figure>
-				<svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 10" fill="none" aria-hidden="true">
+				<svg class="arrow-icon rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 10" fill="none" aria-hidden="true">
 					<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
 				</svg>
 				<figure class="comparison-item">
@@ -303,4 +303,41 @@
 	}
 
 	.btn-secondary:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+	@media (max-width: 640px) {
+		.page {
+			padding: 2rem 1rem;
+		}
+
+		.hero {
+			margin-bottom: 2.5rem;
+		}
+
+		.feature-card {
+			flex-direction: column;
+			gap: 1.5rem;
+			padding: 1.25rem;
+		}
+
+		.feature-card--reverse {
+			flex-direction: column;
+		}
+
+		.comparison {
+			flex-direction: column;
+		}
+
+		.arrow-icon {
+			transform: rotate(90deg);
+		}
+
+		.cta {
+			padding: 1.5rem 1rem;
+		}
+
+		.privacy-icons {
+			flex-wrap: wrap;
+			gap: 1rem;
+		}
+	}
 </style>
