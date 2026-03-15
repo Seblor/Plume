@@ -300,7 +300,7 @@
       <div class="add-timeline-bar">
         <div class="toggle-label">
           <Checkbox class="my-0" bind:checked={$scrollOnCursorChange}
-            >Move timelines with slider</Checkbox
+            >Scroll timelines with slider</Checkbox
           >
         </div>
 
