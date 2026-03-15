@@ -11,26 +11,22 @@
     <slot />
   </main>
 
-  <footer class="flex">
-    <p class="w-1/3 flex place-content-start gap-1"></p>
-    <p class="w-1/3 flex place-content-center gap-1">
-      Made with ❤️ by <a href="https://github.com/seblor">Seblor</a>
-    </p>
-    <p class="w-1/3 flex place-content-end px-6 gap-6">
-      <a href="/terms">Terms of Services</a>
+  <footer>
+    <p class="footer-credit">Made with ❤️ by <a href="https://github.com/seblor">Seblor</a></p>
+    <nav class="footer-links">
+      <a href="/terms">Terms of Service</a>
       <a href="/privacy">Privacy Policy</a>
-    </p>
+    </nav>
   </footer>
 </div>
 
-<style lang="scss">
+<style>
   .app {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    min-width: 700px;
     max-height: 100vh;
-    align-content: stretch;
+    min-width: 700px;
     width: 100vw;
     overflow: hidden;
   }
@@ -40,25 +36,50 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
     width: 100%;
-    margin: 0 auto;
     box-sizing: border-box;
-    flex-wrap: wrap;
   }
 
   footer {
     display: flex;
-    padding: 0.5em;
-
-    a {
-      font-weight: bold;
-    }
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 1.25rem;
+    border-top: 1px solid var(--border);
+    background: rgba(13, 17, 23, 0.6);
+    flex-shrink: 0;
   }
 
-  @media (min-width: 480px) {
-    footer {
-      padding: 0.5em 0;
-    }
+  .footer-credit {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1;
+  }
+
+  .footer-credit a {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .footer-credit a:hover {
+    color: var(--text-primary);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .footer-links a:hover {
+    color: var(--text-secondary);
+    text-decoration: none;
   }
 </style>

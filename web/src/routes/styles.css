@@ -1,87 +1,132 @@
 @import '@fontsource/fira-mono';
 
 @font-face {
-	font-family: 'GreatVibes'; /*a name to be used later*/
-	src: url('/fonts/GreatVibes-Regular.ttf'); /*URL to font*/
+	font-family: 'GreatVibes';
+	src: url('/fonts/GreatVibes-Regular.ttf');
 }
 
-.plume {
-	font-family: 'GreatVibes', cursive;
-	color: var(--color-theme-1);
-}
-
+/* ─── Design tokens ──────────────────────────────────────────────────────── */
 :root {
-	--font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+	/* typography */
+	--font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
-	--color-bg-0: hsl(0, 0%, 30%);
-	--color-bg-1: hsl(0, 0%, 22%);
-	--color-bg-2: hsl(0, 0%, 20%);
-	--color-theme-1: #ff3e00;
+	--font-display: 'GreatVibes', cursive;
+
+	/* palette – dark base */
+	--bg-base:    #0d1117;
+	--bg-surface: #161b22;
+	--bg-overlay: #21262d;
+	--bg-hover:   #2d3748;
+
+	/* accent – vivid red */
+	--accent:       #e53e3e;
+	--accent-hover: #fc5252;
+	--accent-muted: rgba(229, 62, 62, 0.15);
+
+	/* text */
+	--text-primary:   #f0f6fc;
+	--text-secondary: #8b949e;
+	--text-muted:     #484f58;
+
+	/* borders */
+	--border:       #30363d;
+	--border-focus: #58a6ff;
+
+	/* misc */
+	--radius-sm: 6px;
+	--radius-md: 12px;
+	--radius-lg: 20px;
+	--shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+	--transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+	/* legacy compat */
+	--color-theme-1: var(--accent);
 	--color-theme-2: #4075a6;
-	--color-text: rgba(0, 0, 0, 0.7);
-	--column-width: 42rem;
-	--column-margin-top: 4rem;
-	font-family: var(--font-body);
-	color: var(--color-text);
+	--color-text: var(--text-primary);
+	--font-body: var(--font-body);
+	--font-mono: var(--font-mono);
+}
+
+/* ─── Reset & base ───────────────────────────────────────────────────────── */
+*, *::before, *::after {
+	box-sizing: border-box;
 }
 
 body {
-	color: white;
-	min-height: 100vh;
 	margin: 0;
+	min-height: 100vh;
+	font-family: var(--font-body);
+	color: var(--text-primary);
+	background-color: var(--bg-base);
+	background-image:
+		radial-gradient(ellipse 80% 50% at 50% -10%,
+			rgba(229, 62, 62, 0.08) 0%,
+			transparent 60%),
+		radial-gradient(ellipse 60% 40% at 80% 80%,
+			rgba(64, 117, 166, 0.06) 0%,
+			transparent 60%);
 	background-attachment: fixed;
-	background-color: var(--color-bg-1);
-	background-size: 100vw 100vh;
-	background-image: radial-gradient(
-			50% 50% at 50% 50%,
-			rgba(255, 255, 255, 0.1) 0%,
-			rgba(255, 255, 255, 0) 100%
-		),
-		linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%);
+	background-size: cover;
 }
 
-h1,
-h2,
+/* ─── Typography ─────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 600;
+	line-height: 1.25;
+	color: var(--text-primary);
+	margin: 0;
+}
+
+h1 { font-size: 1.875rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+@media (min-width: 720px) {
+	h1 { font-size: 2.25rem; }
+}
+
 p {
 	font-weight: 400;
-}
-
-p {
-	line-height: 1.5;
+	line-height: 1.6;
+	color: var(--text-secondary);
+	margin: 0;
 }
 
 a {
-	color: var(--color-theme-1);
+	color: var(--accent);
 	text-decoration: none;
+	transition: color var(--transition);
 }
 
 a:hover {
+	color: var(--accent-hover);
 	text-decoration: underline;
 }
 
-h1 {
-	font-size: 2rem;
-	text-align: center;
-}
-
-h2 {
-	font-size: 1rem;
+code {
+	font-family: var(--font-mono);
+	font-size: 0.875em;
+	padding: 0.15em 0.4em;
+	background: var(--bg-overlay);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	color: var(--accent-hover);
 }
 
 pre {
-	font-size: 16px;
 	font-family: var(--font-mono);
-	background-color: rgba(255, 255, 255, 0.45);
-	border-radius: 3px;
-	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
-	padding: 0.5em;
+	font-size: 14px;
+	background: var(--bg-overlay);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	padding: 1em;
 	overflow-x: auto;
-	color: var(--color-text);
+	color: var(--text-primary);
 }
 
-input,
-button {
+/* ─── Forms ──────────────────────────────────────────────────────────────── */
+input, button, select, textarea {
 	font-size: inherit;
 	font-family: inherit;
 }
@@ -90,10 +135,41 @@ button:focus:not(:focus-visible) {
 	outline: none;
 }
 
-@media (min-width: 720px) {
-	h1 {
-		font-size: 2.4rem;
-	}
+input {
+	background-color: var(--bg-overlay) !important;
+	border: 1px solid var(--border) !important;
+	color: var(--text-primary) !important;
+	border-radius: var(--radius-sm) !important;
+	transition: border-color var(--transition) !important;
+}
+
+input:focus {
+	border-color: var(--border-focus) !important;
+	outline: none !important;
+}
+
+/* ─── Scrollbars ─────────────────────────────────────────────────────────── */
+.scrollbar::-webkit-scrollbar { width: 6px; }
+.scrollbar::-webkit-scrollbar-track { background: transparent; }
+.scrollbar::-webkit-scrollbar-thumb {
+	background: var(--bg-hover);
+	border-radius: 999px;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+	background: var(--text-muted);
+}
+
+/* ─── Utility classes ────────────────────────────────────────────────────── */
+.plume {
+	font-family: var(--font-display);
+	color: var(--accent);
+}
+
+.card {
+	background: var(--bg-surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-card);
 }
 
 .visually-hidden {
@@ -110,8 +186,4 @@ button:focus:not(:focus-visible) {
 
 .label-g {
 	cursor: pointer;
-}
-
-input {
-	background-color: hsl(0, 0%, 20%) !important;
 }

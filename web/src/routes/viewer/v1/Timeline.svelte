@@ -102,8 +102,13 @@
     });
   }
 
-  $: {
-    $maxWidth;
+  // Guard against the feedback-loop cascade:
+  // updateGraph writes to $allChartWidths -> $maxWidth changes -> this reactive
+  // fires on every timeline -> each one writes back -> repeat. The check ensures
+  // we only re-render when $maxWidth genuinely changes, breaking the cycle.
+  let lastAppliedMaxWidth = 0;
+  $: if ($maxWidth !== lastAppliedMaxWidth) {
+    lastAppliedMaxWidth = $maxWidth;
     updateGraph({ updateDummy: false });
   }
 
@@ -204,6 +209,7 @@
           nodeSpacing: 10,
           algorithm: "none",
         },
+				textYOffset: "0.95em",
       },
     );
 
@@ -237,9 +243,8 @@
   });
 </script>
 
-<div class="timeline relative rounded-2xl" bind:this={root}>
-  <div
-    class="absolute top-0 left-0 cursor-pointer m-2"
+<div class="timeline" bind:this={root}>
+  <div class="close-btn"
     on:click={() => dispatchClose("close")}
     on:keypress={() => {
       void 0;
@@ -248,7 +253,7 @@
     role="button"
   >
     <svg
-      class="w-4 h-4 text-gray-800 dark:text-white"
+      class="close-icon"
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -263,21 +268,21 @@
       />
     </svg>
   </div>
-  <div class="w-40 flex justify-center align-center h-full">
+  <div class="user-panel">
     {#await getUserDataDemoFallback(patchFilter)}
-      <span class="timeline-user">{patchFilter}</span>
+      <span class="timeline-username">{patchFilter}</span>
     {:then userData}
-      <div class="flex flex-col m-0 p-0 h-full w-full text-center">
+      <div class="user-inner">
         <div
-          class="h-3/4 bg-no-repeat bg-center bg-cover"
+          class="user-avatar"
           style:background-image={"url(" + userData.avatar.link + ")"}
         >
           <!-- <img class="aspect-square" style="" src={userData.avatar.link} alt="user avatar" /> -->
         </div>
-        <span class="timeline-user">{userData.global_name}</span>
+        <span class="timeline-username">{userData.global_name}</span>
       </div>
     {:catch error}
-      <span class="timeline-user">error: {patchFilter}</span>
+      <span class="timeline-username">error: {patchFilter}</span>
     {/await}
   </div>
   <div
@@ -296,7 +301,7 @@
 
       <!-- Values are fine tuned from various tests, no idea why d3kit-timeline fucks up dimensions so much -->
       <div
-        class="cursor-wrapper cursor border border-primary-full"
+        class="cursor-wrapper"
         bind:this={cursorElement}
         style:left="{cursorLeft}px"
       />
@@ -310,56 +315,128 @@
   </div>
 </div>
 
-<style lang="scss">
+<style>
+  /* ── Timeline card ────────────────────────────── */
   .timeline {
     width: 100%;
     height: 125px;
     overflow-y: hidden;
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    // box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.1);
+    background: var(--bg-overlay);
+  }
 
-    &-user {
-      margin: 0.5rem;
-    }
+  /* ── Close button ─────────────────────────────── */
+  .close-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0.375rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--radius-sm);
+  }
 
-    &-wrapper {
-      margin-bottom: 1rem;
-      overflow-x: auto;
-      overflow-y: hidden;
-      flex: 1;
-    }
+  .close-btn:hover {
+    color: var(--text-primary);
+  }
 
-    &-container {
-      position: relative;
+  .close-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
 
-      .cursor {
-        position: absolute;
-        top: 0px;
-        height: 100%;
-        width: 0px;
-        // border: 1px solid #777;
-      }
+  /* ── User panel (avatar + name) ───────────────── */
+  .user-panel {
+    width: 9rem;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 
-      .cursor-wrapper {
-        position: absolute;
-        pointer-events: none;
-        top: 0px;
-        height: 100%;
-        margin-left: 20px;
-        margin-right: 20px;
-      }
-    }
+  .user-avatar {
+    height: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+  }
 
-    &-graph {
-      display: inline-block;
-      // border: 1px solid #ccc;
-    }
+  .timeline-username {
+    margin: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 8rem;
+  }
 
-    &-dummy-graph {
-      visibility: hidden;
-      height: 0px;
-    }
+  .user-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── Scroll wrapper ───────────────────────────── */
+  .timeline-wrapper {
+    margin-bottom: 0.75rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex: 1;
+    /* Thin scrollbar inside timeline */
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-hover) transparent;
+  }
+
+  .timeline-wrapper::-webkit-scrollbar { height: 3px; }
+  .timeline-wrapper::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 2px; }
+
+  /* ── Container + cursor ───────────────────────── */
+  .timeline-container {
+    position: relative;
+  }
+
+  .cursor-wrapper {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-left: 2px solid var(--accent);
+    opacity: 0.7;
+  }
+
+  .timeline-graph {
+    display: inline-block;
+  }
+
+  .timeline-dummy-graph {
+    visibility: hidden;
+    height: 0;
+  }
+
+  /* ── D3Kit timeline SVG overrides ─────────────── */
+  :global(.timeline svg text) {
+    fill: var(--text-secondary);
+  }
+
+  :global(.timeline svg .axis path),
+  :global(.timeline svg .axis line) {
+    stroke: var(--border);
   }
 </style>
