@@ -1,9 +1,9 @@
-import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, ChannelType, ChatInputCommandInteraction, EmbedBuilder, Guild, GuildBasedChannel, GuildTextBasedChannel, Message, NonThreadGuildBasedChannel, PermissionsBitField } from 'discord.js'
-import { CategoryChannelStateData, ChannelState, LogData, TimedPatches, VoiceChannelStateData, PlumeChannelType } from 'shared_types'
-import { getGuildData, patchGuildData } from './db.js'
-import pako from 'pako'
+import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, ChannelType, type ChatInputCommandInteraction, EmbedBuilder, type Guild, type GuildBasedChannel, type GuildTextBasedChannel, type Message, type NonThreadGuildBasedChannel, PermissionsBitField } from 'discord.js';
 import jsonpatch from 'fast-json-patch';
-import _ from 'lodash'
+import _ from 'lodash';
+import pako from 'pako';
+import { type CategoryChannelStateData, type ChannelState, type LogData, PlumeChannelType, type TimedPatches, type VoiceChannelStateData } from 'shared_types';
+import { getGuildData, patchGuildData } from './db.js';
 import { logError } from './logger.js';
 
 type GuildStateType = ChannelState[]
@@ -14,6 +14,7 @@ export default class GuildWatcher {
   guild: Guild
   logChannel: GuildTextBasedChannel | null = null
   logMessage: Message | null = null
+  errorSent: boolean = false
 
   initialState: GuildStateType = []
   previousState: GuildStateType = []
@@ -34,7 +35,7 @@ export default class GuildWatcher {
     }, 10 * 60e3)
   }
 
-  async init(): Promise<this> {
+  async init (): Promise<this> {
     await this.removeDeprecatedData()
     const guildData = getGuildData(this.guild.id)
     if (guildData.logChannelId != null) {
@@ -43,18 +44,18 @@ export default class GuildWatcher {
     return this
   }
 
-  destroy() {
+  destroy () {
     if (this.updateInterval != null) {
       clearInterval(this.updateInterval)
     }
   }
 
-  async sendUpdateMessageAndRotateLogs(): Promise<this> {
+  async sendUpdateMessageAndRotateLogs (): Promise<this> {
     await this.updateMessage()
     return this.rotateLogs()
   }
 
-  rotateLogs(): this {
+  rotateLogs (): this {
     this.initialState = this.generateGuildState()
     this.previousState = this.initialState
     this.patches = []
@@ -63,7 +64,7 @@ export default class GuildWatcher {
     return this
   }
 
-  async removeDeprecatedData(): Promise<this> {
+  async removeDeprecatedData (): Promise<this> {
     const guildData = getGuildData(this.guild.id)
     if (guildData == null) {
       await patchGuildData(this.guild.id)
@@ -85,7 +86,7 @@ export default class GuildWatcher {
     return this
   }
 
-  async setLogChannel(channel: GuildTextBasedChannel, interaction?: ChatInputCommandInteraction): Promise<this> {
+  async setLogChannel (channel: GuildTextBasedChannel, interaction?: ChatInputCommandInteraction): Promise<this> {
     if (!channel.isTextBased()) {
       if (interaction) {
         await interaction.reply({
@@ -133,8 +134,9 @@ export default class GuildWatcher {
     return this
   }
 
-  async handleGuildUpdate(origin: string, force = false): Promise<this> {
+  async handleGuildUpdate (_origin: string, force = false): Promise<this> {
     if (this.patches.length > 0 && new Date().getDay() !== new Date(this.patches[0].timestamp).getDay()) {
+      this.errorSent = false
       await this.sendUpdateMessageAndRotateLogs()
     }
     const newState = this.generateGuildState()
@@ -157,7 +159,7 @@ export default class GuildWatcher {
     return this
   }
 
-  handleChannelDeleted(channel: NonThreadGuildBasedChannel): this {
+  handleChannelDeleted (channel: NonThreadGuildBasedChannel): this {
     if (channel.id === this.logChannel?.id) {
       this.logChannel = null
       this.logMessage = null
@@ -168,7 +170,7 @@ export default class GuildWatcher {
     return this
   }
 
-  generateGuildState(): GuildStateType {
+  generateGuildState (): GuildStateType {
     const initialState: GuildStateType = this.guild.channels.cache
       .filter(channel => {
         return !channel.isThread() && channel.parent == null
@@ -179,7 +181,7 @@ export default class GuildWatcher {
     return initialState
   }
 
-  async updateMessage(): Promise<void> {
+  async updateMessage (): Promise<void> {
     const dataToWrite: LogData = {
       meta: {
         logVersion: 1,
@@ -208,27 +210,29 @@ export default class GuildWatcher {
         const canFetchMessage = this.logChannel?.permissionsFor(this.guild.client.user)?.has(PermissionsBitField.Flags.ReadMessageHistory) ?? false
         console.log(`Error editing message in guild ${this.guild.name} (${this.guild.id}). Can see channel: ${canSeeChannel}, can fetch message: ${canFetchMessage}.`)
 
-        if (!canSeeChannel) {
-          return this.logMessage! // Cannot be null since it has been checked just before
+        if (!canSeeChannel || !this.logChannel) {
+          return this.logMessage as Message // Cannot be null since it has been checked just before
         }
 
-        return this.logChannel!.send({
+        return this.logChannel.send({
           content: '',
           files: [dataTextFileCompressedMinified, plumeLogo]
         })
       })
     } else {
-      if (this.logChannel == null) {
+      const logChannel = this.logChannel
+      if (logChannel == null) {
         return
       }
-      this.logMessage = await this.logChannel
+      this.logMessage = await logChannel
         .send({
           content: '',
           files: [dataTextFileCompressedMinified, plumeLogo]
         })
         .catch(async (error: Error) => {
-          if (error.message.includes('Missing Access')) {
-            const permsInChannel = this.logChannel!.permissionsFor(await this.guild.members.fetchMe())
+          console.log(this.errorSent);
+          if (error.message.includes('Missing Access') || error.message.includes('Missing Permissions')) {
+            const permsInChannel = logChannel.permissionsFor(await this.guild.members.fetchMe())
 
             const missingPerms = {
               "View channel": !permsInChannel.has(PermissionsBitField.Flags.ViewChannel),
@@ -236,7 +240,8 @@ export default class GuildWatcher {
               "Embed links": !permsInChannel.has(PermissionsBitField.Flags.EmbedLinks),
               "Attach files": !permsInChannel.has(PermissionsBitField.Flags.AttachFiles),
             }
-            if (Object.values(missingPerms).some(v => v)) {
+            if (Object.values(missingPerms).some(v => v) && this.errorSent === false) {
+              this.errorSent = true
               logError(
                 "Missing Permissions",
                 `Some ${Object.values(missingPerms).filter(v => v).length > 1 ? 'permissions are' : 'permission is'} missing for Plume in Guild ${this.guild.name} (${this.guild.id}) and channel ${this.logChannel?.name} (${this.logChannel?.id}) :
@@ -306,7 +311,7 @@ export default class GuildWatcher {
   updateMessageDebounced = _.debounce(this.updateMessage, 60e3)
 }
 
-function guildChannelOrder(a: NonThreadGuildBasedChannel, b: NonThreadGuildBasedChannel): number {
+function guildChannelOrder (a: NonThreadGuildBasedChannel, b: NonThreadGuildBasedChannel): number {
   // Set the voice and stage channels at the end
   if (a.type === ChannelType.GuildVoice || a.type === ChannelType.GuildStageVoice) {
     return 1
@@ -318,7 +323,7 @@ function guildChannelOrder(a: NonThreadGuildBasedChannel, b: NonThreadGuildBased
   return a.rawPosition - b.rawPosition
 }
 
-function generateChannelState(channel: GuildBasedChannel): ChannelState {
+function generateChannelState (channel: GuildBasedChannel): ChannelState {
   let channelState: ChannelState | null = null
   if (channel.type === ChannelType.GuildCategory) {
     const categoryChannelState: CategoryChannelStateData = {
