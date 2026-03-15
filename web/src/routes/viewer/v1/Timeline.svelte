@@ -55,9 +55,11 @@
 	$: {
 		if (logsData.timedPatches.length > 0) {
 			const firstPatchDate = new Date(logsData.timedPatches[0].timestamp);
-			firstPatchDate.setHours(0, 0, 0, 0);
 			dayStartDate = firstPatchDate;
-			dayEndDate = new Date(firstPatchDate.getTime() + 24 * 60 * 60 * 1000);
+			const lastPatchDate = new Date(
+				logsData.timedPatches[logsData.timedPatches.length - 1].timestamp
+			);
+			dayEndDate = new Date(lastPatchDate.getTime());
 		}
 	}
 
