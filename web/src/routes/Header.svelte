@@ -97,6 +97,7 @@
 	.brand-name {
 		font-family: 'GreatVibes', cursive;
 		font-size: 1.6rem;
+    margin-top: 0.25rem;
 		line-height: 1;
 		color: var(--accent);
 		letter-spacing: 0.01em;
