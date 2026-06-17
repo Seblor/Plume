@@ -1,4 +1,4 @@
-import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, ChannelType, type ChatInputCommandInteraction, EmbedBuilder, type Guild, type GuildBasedChannel, type GuildTextBasedChannel, type Message, type NonThreadGuildBasedChannel, PermissionsBitField } from 'discord.js';
+import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, ChannelType, type ChatInputCommandInteraction, EmbedBuilder, type Guild, type GuildBasedChannel, type GuildTextBasedChannel, type Message, MessageFlags, type NonThreadGuildBasedChannel, PermissionsBitField } from 'discord.js';
 import jsonpatch from 'fast-json-patch';
 import _ from 'lodash';
 import pako from 'pako';
@@ -91,7 +91,7 @@ export default class GuildWatcher {
       if (interaction) {
         await interaction.reply({
           content: 'The channel must be a text channel.',
-          ephemeral: true
+          flags: [MessageFlags.Ephemeral]
         })
       }
       return this
@@ -112,7 +112,7 @@ export default class GuildWatcher {
           ${Object.entries(missingPerms).map(([key, value]) => {
             return `- ${value ? '❌' : '✅'} ${key}`
           }).join('\n')}`,
-          ephemeral: true
+          flags: [MessageFlags.Ephemeral]
         })
 
         return this
@@ -122,7 +122,7 @@ export default class GuildWatcher {
 
       await interaction.reply({
         content: `The log channel has been set to <#${channel.id}>.`,
-        ephemeral: true
+        flags: [MessageFlags.Ephemeral]
       })
     }
 

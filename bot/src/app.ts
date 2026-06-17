@@ -1,5 +1,5 @@
 // Connect to Discord
-import { Client, IntentsBitField, OAuth2Scopes, WebhookClient, AuditLogEvent, Interaction, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ChannelType, TextChannel, SlashCommandBuilder, PermissionFlagsBits, Team, User } from 'discord.js'
+import { Client, IntentsBitField, OAuth2Scopes, WebhookClient, AuditLogEvent, Interaction, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ChannelType, TextChannel, SlashCommandBuilder, PermissionFlagsBits, Team, User, MessageFlags } from 'discord.js'
 
 import commands from './commands.js'
 import { getGuildData, initDb } from './db.js'
@@ -143,20 +143,20 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 
     const channelData = interaction.options.getChannel('channel', true)
     if (!channelData) {
-      await interaction.reply({ ephemeral: true, content: 'The channel must be in the same guild as the command' })
+      await interaction.reply({ flags: [MessageFlags.Ephemeral], content: 'The channel must be in the same guild as the command' })
       return
     }
 
     const channel = await interaction.guild.channels.fetch(channelData.id)
     if (!channel || channel.type !== ChannelType.GuildText) {
-      await interaction.reply({ ephemeral: true, content: 'The channel must be a text channel' })
+      await interaction.reply({ flags: [MessageFlags.Ephemeral], content: 'The channel must be a text channel' })
       return
     }
 
     guildWatchers[interaction.guild.id].setLogChannel(channel, interaction)
 
   } else if (interaction.isButton() && interaction.customId === 'recreate-link') {
-    await interaction.reply({ ephemeral: true, content: 'Recreating link...' })
+    await interaction.reply({ flags: [MessageFlags.Ephemeral], content: 'Recreating link...' })
     const logFileUrl = `${process.env.PREVIEW_PREFIX_URL}${interaction.message.attachments.find(a => a.name.includes('gzip'))?.url}`
 
     if (logFileUrl === undefined) {
@@ -184,11 +184,11 @@ client.on('interactionCreate', async (interaction: Interaction) => {
       appOwner instanceof Team && appOwner.members.some(teamMember => teamMember.id === userId)
       || appOwner instanceof User && appOwner.id === userId
     if (!isCommandCalledByOwner || appOwner == null) {
-      await interaction.reply({ ephemeral: true, content: 'You are not allowed to use this command' })
+      await interaction.reply({ flags: [MessageFlags.Ephemeral], content: 'You are not allowed to use this command' })
       return
     }
 
-    await interaction.reply({ ephemeral: true, content: 'Sending alert to owner...' })
+    await interaction.reply({ flags: [MessageFlags.Ephemeral], content: 'Sending alert to owner...' })
 
     const guildId = interaction.options.getString('guild-id')
 
