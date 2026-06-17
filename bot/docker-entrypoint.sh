@@ -22,9 +22,12 @@ if [ -d /app/bot/db-prod.json ]; then
   rmdir /app/bot/db-prod.json
 fi
 
-bun link --cwd ../shared_types/
+cd ../shared_types/
+bun install
+bun run build
+bun link
 
-bun link shared_types
+cd ../bot/
 
 # Install / sync dependencies (fast no-op when lockfile is unchanged)
 bun install
