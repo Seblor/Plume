@@ -1,0 +1,27 @@
+# .dockerignore — placed at the build-context root (plume/)
+# Build context is the plume/ directory; ignore large / sensitive paths.
+
+# Bot: compiled output, local DB files, logs, secrets
+bot/dist_dev/
+bot/dist_prod/
+bot/node_modules/
+bot/logs_dev/
+bot/logs_prod/
+bot/db-dev.json
+bot/db-prod.json
+bot/db-dev.old.json
+bot/.env
+bot/*.ecosystem.config.cjs
+
+# shared_types: compiled output, modules
+shared_types/dist/
+shared_types/node_modules/
+
+# Web (not needed for this image)
+web/
+
+# Misc
+.git/
+.gitignore
+*.MD
+*.md
