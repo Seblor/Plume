@@ -10,8 +10,7 @@ process.on('unhandledRejection', (error, promise) => {
   logError(error, promise)
 })
 
-// eslint-disable-next-line new-cap
-const discordTransport = new DiscordTransport.default({
+const discordTransport = new DiscordTransport({
   webhook: process.env.LOGS_WEBHOOK as string,
   defaultMeta: {},
   level: 'error'

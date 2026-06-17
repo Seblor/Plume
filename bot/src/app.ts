@@ -50,7 +50,7 @@ member count: ${guild.memberCount}
 })
 
 client.on('guildDelete', async guild => {
-  guildWatchers[guild.id].destroy()
+  guildWatchers[guild.id]?.destroy()
   delete guildWatchers[guild.id]
 
   void webhookClient.send({
@@ -58,7 +58,7 @@ client.on('guildDelete', async guild => {
   })
 })
 
-client.on('ready', async () => {
+client.on('clientReady', async () => {
   logger.info(`Logged in as ${client.user?.tag ?? 'unknown'}`)
   console.log(`Logged in as ${client.user?.tag ?? 'unknown'}`)
 
@@ -108,7 +108,7 @@ client.on('ready', async () => {
     }
   })
 
-  const webhookData = process.env.LOGS_WEBHOOK?.match(/discord.com\/api\/webhooks\/(?<id>\d+)\/(?<token>\w+)/)
+  const webhookData = process.env.LOGS_WEBHOOK?.match(/discord.com\/api\/webhooks\/(?<id>\d+)\/(?<token>[\w-]+)/)
   if (webhookData == null || webhookData.groups == null) {
     console.log("Could not find webhook ID");
     return
@@ -116,11 +116,11 @@ client.on('ready', async () => {
 
   const logsWebhook = await client.fetchWebhook(webhookData.groups.id, webhookData.groups.token)
 
-  client.application?.commands.set([
+  await client.application?.commands.set([
     commands['set-log-channel']
   ])
 
-  client.guilds.cache.get(logsWebhook.guildId)?.commands.set([
+  await client.guilds.cache.get(logsWebhook.guildId)?.commands.set([
     new SlashCommandBuilder()
       .setName('send-perm-alert')
       .setDescription('Send a diagnostic to a guild')
@@ -141,7 +141,19 @@ client.on('interactionCreate', async (interaction: Interaction) => {
       return
     }
 
-    guildWatchers[interaction.guild.id].setLogChannel(interaction.options.getChannel('channel', true), interaction)
+    const channelData = interaction.options.getChannel('channel', true)
+    if (!channelData) {
+      await interaction.reply({ ephemeral: true, content: 'The channel must be in the same guild as the command' })
+      return
+    }
+
+    const channel = await interaction.guild.channels.fetch(channelData.id)
+    if (!channel || channel.type !== ChannelType.GuildText) {
+      await interaction.reply({ ephemeral: true, content: 'The channel must be a text channel' })
+      return
+    }
+
+    guildWatchers[interaction.guild.id].setLogChannel(channel, interaction)
 
   } else if (interaction.isButton() && interaction.customId === 'recreate-link') {
     await interaction.reply({ ephemeral: true, content: 'Recreating link...' })

@@ -1,6 +1,6 @@
-import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import { PermissionFlagsBits, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "discord.js";
 
-const commands: { [key: string]: SlashCommandBuilder | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup"> } = {
+const commands: { [key: string]: SlashCommandOptionsOnlyBuilder } = {
   'set-log-channel': new SlashCommandBuilder()
     .setName('set-log-channel')
     .setDescription('Set the channel to log events to')
