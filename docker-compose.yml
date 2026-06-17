@@ -4,6 +4,7 @@ services:
     working_dir: /app/bot
     command: ["sh", "docker-entrypoint.sh"]
     restart: unless-stopped
+    user: 1000
 
     # Load secrets from bot/.env (see bot/.env.example)
     env_file:
