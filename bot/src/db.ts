@@ -1,5 +1,4 @@
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import { join } from 'path'
 import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
 
@@ -16,9 +15,9 @@ interface Data {
   guilds: Record<string, GuildData | undefined>
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const file = join(__dirname, '../../', `db-${process.env.NODE_ENV?.startsWith('prod') ? 'prod' : 'dev'}.json`)
+// process.cwd() is the bot root directory (WORKDIR in Docker, or wherever the
+// process is started from locally), regardless of where the source file lives.
+const file = join(process.cwd(), `db-${process.env.NODE_ENV?.startsWith('prod') ? 'prod' : 'dev'}.json`)
 
 console.log('Writing DB file to ' + file);
 

@@ -210,29 +210,27 @@ export default class GuildWatcher {
         const canFetchMessage = this.logChannel?.permissionsFor(this.guild.client.user)?.has(PermissionsBitField.Flags.ReadMessageHistory) ?? false
         console.log(`Error editing message in guild ${this.guild.name} (${this.guild.id}). Can see channel: ${canSeeChannel}, can fetch message: ${canFetchMessage}.`)
 
-        if (!canSeeChannel || !this.logChannel) {
-          return this.logMessage as Message // Cannot be null since it has been checked just before
+        if (!canSeeChannel) {
+          return this.logMessage! // Cannot be null since it has been checked just before
         }
 
-        return this.logChannel.send({
+        return this.logChannel!.send({
           content: '',
           files: [dataTextFileCompressedMinified, plumeLogo]
         })
       })
     } else {
-      const logChannel = this.logChannel
-      if (logChannel == null) {
+      if (this.logChannel == null) {
         return
       }
-      this.logMessage = await logChannel
+      this.logMessage = await this.logChannel
         .send({
           content: '',
           files: [dataTextFileCompressedMinified, plumeLogo]
         })
         .catch(async (error: Error) => {
-          console.log(this.errorSent);
           if (error.message.includes('Missing Access') || error.message.includes('Missing Permissions')) {
-            const permsInChannel = logChannel.permissionsFor(await this.guild.members.fetchMe())
+            const permsInChannel = this.logChannel!.permissionsFor(await this.guild.members.fetchMe())
 
             const missingPerms = {
               "View channel": !permsInChannel.has(PermissionsBitField.Flags.ViewChannel),

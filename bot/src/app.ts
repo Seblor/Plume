@@ -1,21 +1,5 @@
 // Connect to Discord
-import {
-  ActionRowBuilder,
-  AuditLogEvent,
-  ButtonBuilder,
-  ButtonStyle,
-  Client,
-  EmbedBuilder,
-  IntentsBitField,
-  type Interaction,
-  OAuth2Scopes,
-  PermissionFlagsBits,
-  PermissionsBitField,
-  SlashCommandBuilder,
-  Team,
-  User,
-  WebhookClient
-} from 'discord.js'
+import { Client, IntentsBitField, OAuth2Scopes, WebhookClient, AuditLogEvent, Interaction, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ChannelType, TextChannel, SlashCommandBuilder, PermissionFlagsBits, Team, User } from 'discord.js'
 
 import commands from './commands.js'
 import { getGuildData, initDb } from './db.js'
@@ -119,10 +103,8 @@ client.on('ready', async () => {
 
   client.on('channelDelete', channel => {
     if (!channel.isDMBased()) {
-      Object.values(guildWatchers).forEach(async guild => {
-        await guild.handleGuildUpdate('channelDelete');
-        guild.handleChannelDeleted(channel);
-      })
+      Object.values(guildWatchers).forEach(guild => void guild.handleGuildUpdate('channelDelete'))
+      Object.values(guildWatchers).forEach(guild => guild.handleChannelDeleted(channel))
     }
   })
 
