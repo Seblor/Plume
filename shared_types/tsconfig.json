@@ -5,6 +5,7 @@
     "allowJs": true,
     // Generate d.ts files
     "declaration": true,
+    "rootDir": "./",
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
@@ -15,8 +16,8 @@
 
     "preserveConstEnums": true,
 
-    "target": "es5",
-    "module": "es2015",
-    "moduleResolution": "node"
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
   }
 }

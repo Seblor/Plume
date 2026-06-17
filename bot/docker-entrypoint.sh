@@ -22,6 +22,8 @@ if [ -d /app/bot/db-prod.json ]; then
   rmdir /app/bot/db-prod.json
 fi
 
+bun i -g typescript
+
 cd ../shared_types/
 bun install
 bun run build
