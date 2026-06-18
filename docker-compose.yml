@@ -1,10 +1,11 @@
 services:
   bot:
+    container_name: Plume
     image: oven/bun:1-alpine
     working_dir: /app/bot
     command: ["sh", "docker-entrypoint.sh"]
     restart: unless-stopped
-    user: 1000
+    user: "1000:1000"
 
     # Load secrets from bot/.env (see bot/.env.example)
     env_file:
@@ -15,18 +16,7 @@ services:
       - ./bot:/app/bot
       - ./shared_types:/app/shared_types
 
-      # Keep node_modules inside the container so the host directory
-      # doesn't shadow the container-installed packages.
-      - plume_bot_modules:/app/bot/node_modules
-
-      # Persist log files across container restarts
-      - plume_bot_logs:/app/bot/logs_prod
-
       # Persist the JSON database across container recreations.
       # lowdb creates the file automatically on first run, so no pre-seeding needed.
       # Uncomment to bind-mount it to the host:
       # - ./bot-data/db-prod.json:/app/bot/db-prod.json
-
-volumes:
-  plume_bot_modules:
-  plume_bot_logs:
